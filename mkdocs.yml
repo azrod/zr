@@ -1,0 +1,50 @@
+site_name: ZR
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github-alt
+
+nav:
+  - Overview: "index.md"
+  - Getting Started: "getting_start.md"
+  - Setup:
+      - Log Level: "setup/log_level.md"
+      - Log Format: "setup/log_format.md"
+      - Hot Reload: "setup/hot_reload.md"
+  - Backends:
+      - ETCD: "backends/etcd.md"
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+extra:
+  analytics:
+    provider: google
+    property: G-LNP3KHYKK3
+
+repo_url: https://github.com/azrod/zr
+repo_name: azrod/zr

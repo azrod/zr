@@ -1,0 +1,38 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "go test",
+            "type": "shell",
+            "command": "go test -coverprofile=coverage.out $(go list ./... | grep -v mocks | grep -v example) && go tool cover -func=coverage.out",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "go mod tidy",
+            "type": "shell",
+            "command": "go mod tidy",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Server Doc",
+            "type": "shell",
+            "command": "docker run --rm -it -p 8000:8000 -v ${workspaceFolder}:/docs squidfunk/mkdocs-material",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+            },
+            "problemMatcher": []
+        },
+    ]
+}
