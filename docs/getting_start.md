@@ -31,3 +31,7 @@
 {"level":"info","time":"2022-06-04T14:36:24+02:00","caller":"basic.go:15","message":"hello world"}
 ```
 
+## Examples
+
+A lot of examples are available in the [examples](https://github.com/azrod/zr/tree/main/examples) directory.
+
