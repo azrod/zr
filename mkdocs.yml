@@ -26,6 +26,7 @@ nav:
       - Log Format: "setup/log_format.md"
       - Hot Reload: "setup/hot_reload.md"
   - Backends:
+      - Local API: "backends/local_api.md"
       - ETCD: "backends/etcd.md"
 
 plugins:

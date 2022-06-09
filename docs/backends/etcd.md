@@ -1,18 +1,34 @@
 # Backend ETCD
 
-The etcd backend is used to store the configuration in etcd.
+The [ETCD](https://etcd.io/) backend is used to store the configuration.
+zr read database every time (Default interval is 60 seconds) and apply the configuration.
 
-```golang
+A complet example is available in the [examples/etcd](https://github.com/azrod/zr/tree/main/examples/etcd).
 
-zr.Setup(
-	zr.WithCustomLevel("debug"),
-	zr.WithCustomFormat("human"),
-	zr.WithCustomHotReload(
-		hr.WithBackendETCD(etcd.ConfigBackendETCD{
-			Endpoints: []string{"http://etcd.databases:2379"},
-			Path:      "/zr/basic/config",
-		}),
-	),
-)
+## Basic usage
+
+```go linenums="1"
+
+	zr.Setup(
+		zr.WithCustomHotReload(
+			hr.WithBackendETCD(backend.ConfigBackendETCD{
+				Endpoints: []string{"http://localhost:2379"},
+				Path:      "/zr/basic/config",
+			}),
+		),
+	)
+
+```
+
+## Options for the backend
+
+```go
+
+backend.ConfigBackendETCD{
+	Endpoints: []string{"http://localhost:2379"},
+	Path:      "/zr/basic/config",
+	DialTimeout: time.Second * 5,
+	TLS:         tlsConfig,
+}
 
 ```
