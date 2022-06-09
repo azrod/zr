@@ -1,6 +1,9 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
+	"io/ioutil"
 	"os"
 	"os/signal"
 	"time"
@@ -11,13 +14,28 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+var (
+	RootCAs *x509.CertPool
+)
+
+func init() {
+	RootCAs = x509.NewCertPool()
+}
+
 func main() {
+
+	tlsConfig, err := TlsConfig()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to create tls config")
+	}
 
 	zr.Setup(
 		zr.WithCustomHotReload(
 			hr.WithBackendETCD(backend.ConfigBackendETCD{
-				Endpoints: []string{"http://localhost:2379"},
-				Path:      "/zr/basic/config",
+				Endpoints:   []string{"http://localhost:2379"},
+				Path:        "/zr/basic/config",
+				DialTimeout: time.Second * 5,
+				TLS:         tlsConfig,
 			}),
 		),
 	)
@@ -48,5 +66,25 @@ func main() {
 	<-c
 
 	zr.Done()
+
+}
+
+func TlsConfig() (*tls.Config, error) {
+	cert, err := tls.LoadX509KeyPair("tls.crt", "tls.key")
+	if err != nil {
+		return nil, err
+	}
+
+	caCert, err := ioutil.ReadFile("tls.ca")
+	if err != nil {
+		return nil, err
+	}
+	RootCAs.AppendCertsFromPEM(caCert)
+
+	return &tls.Config{
+		Certificates:       []tls.Certificate{cert},
+		RootCAs:            RootCAs,
+		InsecureSkipVerify: true,
+	}, nil
 
 }
