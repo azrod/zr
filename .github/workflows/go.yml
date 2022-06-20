@@ -2,8 +2,10 @@ name: test
 
 on:
   pull_request:
+    types: [ created, edited ]
+  release:
     types: [ created ]
-
+    
 jobs:
   build:
     runs-on: ubuntu-latest
