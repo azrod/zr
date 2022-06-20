@@ -18,7 +18,7 @@ func setFormat(format string) error {
 	allowedFormat := []string{"json", "human"}
 	_, ok := common.Find(allowedFormat, format)
 	if !ok {
-		return error_log_format
+		return errLogFormat
 	}
 
 	if format == "human" {
