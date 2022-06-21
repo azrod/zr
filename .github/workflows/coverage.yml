@@ -20,5 +20,7 @@ jobs:
       - name: Test
         run: go test -coverprofile=coverage.xml ./... && go tool cover -func=coverage.xml
 
-      - name: Codecov
-        uses: codecov/codecov-action@v3.1.0
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
