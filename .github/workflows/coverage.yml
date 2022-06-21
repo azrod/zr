@@ -5,6 +5,8 @@ on:
     types: [opened, edited]
   release:
     types: [created]
+  push:
+    branches: [dev]
 
 jobs:
   build:
