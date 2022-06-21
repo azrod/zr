@@ -1,6 +1,8 @@
-[![codecov](https://codecov.io/gh/azrod/zr/branch/main/graph/badge.svg?token=BDK9XDHOCQ)](https://codecov.io/gh/azrod/zr) [![Go Report Card](https://goreportcard.com/badge/github.com/azrod/zr)](https://goreportcard.com/report/github.com/azrod/zr) [![CodeFactor](https://www.codefactor.io/repository/github/azrod/zr/badge)](https://www.codefactor.io/repository/github/azrod/zr)
+![GitHub](https://img.shields.io/github/license/azrod/zr?style=for-the-badge) ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/azrod/zr?style=for-the-badge) [![Codecov branch](https://img.shields.io/codecov/c/github/azrod/zr/main?style=for-the-badge)](https://codecov.io/gh/azrod/zr) [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/azrod/zr?style=for-the-badge)](https://www.codefactor.io/repository/github/azrod/zr) [![GitHub issues](https://img.shields.io/github/issues/azrod/zr?style=for-the-badge)](https://github.com/azrod/zr/issues) [![Go Report](https://goreportcard.com/badge/github.com/gojp/goreportcard?style=for-the-badge)](https://goreportcard.com/report/github.com/azrod/zr)
 
-# zr
+****
+
+# ZR
 
 ## What is zr ?
 
