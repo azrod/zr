@@ -9,7 +9,8 @@ on:
     branches: [dev]
 
 jobs:
-  build:
+  code-coverage:
+    name: "Code Coverage"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
