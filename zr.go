@@ -192,7 +192,7 @@ func Setup(opts ...ExtraZrOptions) error {
 	}
 
 	// SRC https://github.com/rs/zerolog#add-file-and-line-number-to-log
-	zerolog.CallerMarshalFunc = func(file string, line int) string {
+	zerolog.CallerMarshalFunc = func(pc uintptr, file string, line int) string {
 		short := file
 		for i := len(file) - 1; i > 0; i-- {
 			if file[i] == '/' {
