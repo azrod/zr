@@ -11,8 +11,8 @@ import (
 func main() {
 
 	zr.Setup(
-		zr.WithCustomFormat("json"), // This is the default, but we show it here for clarity.
-		zr.WithCustomLevel("info"),  // This is the default, but we show it here for clarity.
+		zr.WithCustomFormat(zr.FormatJSON()), // This is the default, but we show it here for clarity.
+		zr.WithCustomLevel(zr.LevelInfo()),   // This is the default, but we show it here for clarity.
 	)
 
 	log.Info().Msg("This is a test for level info")

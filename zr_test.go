@@ -112,37 +112,62 @@ func Test_WithNoHotReload(t *testing.T) {
 
 func Test_WithCustomLogLevel(t *testing.T) {
 	err := Setup(
-		WithCustomLevel("debug"),
+		WithCustomLevel(LevelDebug()),
 	)
 
 	assert.Nil(t, err, "Setup should not return error")
 	assert.Equal(t, zerolog.GlobalLevel(), zerolog.DebugLevel, "Log level should be set")
-}
 
-func Test_WithCustomLogLevel_Invalid(t *testing.T) {
-	Setup(
-		WithCustomLevel("unknown"),
+	err = Setup(
+		WithCustomLevel(LevelInfo()),
 	)
 
-	assert.Equal(t, z.level, default_level, "Log level should be set")
+	assert.Nil(t, err, "Setup should not return error")
+	assert.Equal(t, zerolog.GlobalLevel(), zerolog.InfoLevel, "Log level should be set")
 
+	err = Setup(
+		WithCustomLevel(LevelWarn()),
+	)
+
+	assert.Nil(t, err, "Setup should not return error")
+	assert.Equal(t, zerolog.GlobalLevel(), zerolog.WarnLevel, "Log level should be set")
+
+	err = Setup(
+		WithCustomLevel(LevelError()),
+	)
+
+	assert.Nil(t, err, "Setup should not return error")
+	assert.Equal(t, zerolog.GlobalLevel(), zerolog.ErrorLevel, "Log level should be set")
+
+	err = Setup(
+		WithCustomLevel(LevelFatal()),
+	)
+
+	assert.Nil(t, err, "Setup should not return error")
+	assert.Equal(t, zerolog.GlobalLevel(), zerolog.FatalLevel, "Log level should be set")
+
+	err = Setup(
+		WithCustomLevel(LevelPanic()),
+	)
+
+	assert.Nil(t, err, "Setup should not return error")
+	assert.Equal(t, zerolog.GlobalLevel(), zerolog.PanicLevel, "Log level should be set")
+
+	err = Setup(
+		WithCustomLevel(LevelTrace()),
+	)
+
+	assert.Nil(t, err, "Setup should not return error")
+	assert.Equal(t, zerolog.GlobalLevel(), zerolog.TraceLevel, "Log level should be set")
 }
 
 func Test_WithCustomFormat(t *testing.T) {
 	err := Setup(
-		WithCustomFormat("human"),
+		WithCustomFormat(FormatHuman()),
 	)
 
 	assert.Nil(t, err, "Setup should not return error")
 	assert.Equal(t, z.format, "human", "Log format should be set")
-}
-
-func Test_WithCustomFormat_Invalid(t *testing.T) {
-	err := Setup(
-		WithCustomFormat("unknown"),
-	)
-	assert.NotNil(t, err, "Setup should not return error")
-
 }
 
 // 	// --- Given ---

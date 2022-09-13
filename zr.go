@@ -30,15 +30,80 @@ type zr struct {
 }
 
 type ExtraZrOptions func(*zr)
+type FormatsOptions func(*zr)
+type LevelsOptions func(*zr)
 
 /*
 WithCustomLevel is an option which sets up the custom log level.
 zr is called on for custom log level.
 if this option is not used the log level is info.
 */
-func WithCustomLevel(level string) ExtraZrOptions {
+func WithCustomLevel(level LevelsOptions) ExtraZrOptions {
 	return func(t *zr) {
-		t.level, _ = utils.ParseLogLevel(level)
+		level(t)
+	}
+}
+
+/*
+LevelPanic is a helper function which sets the log level to panic.
+*/
+func LevelPanic() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.PanicLevel
+	}
+}
+
+/*
+LevelFatal is a helper function which sets the log level to fatal.
+*/
+func LevelFatal() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.FatalLevel
+	}
+}
+
+/*
+LevelWarning is a helper function which sets the log level to warning.
+*/
+func LevelWarn() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.WarnLevel
+	}
+}
+
+/*
+LevelTrace is a helper function which sets the log level to trace.
+*/
+func LevelTrace() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.TraceLevel
+	}
+}
+
+/*
+LevelDebug is a helper function which sets the log level to debug.
+*/
+func LevelDebug() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.DebugLevel
+	}
+}
+
+/*
+LevelError is a helper function which sets the log level to error.
+*/
+func LevelError() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.ErrorLevel
+	}
+}
+
+/*
+LevelInfo is a helper function which sets the log level to info.
+*/
+func LevelInfo() LevelsOptions {
+	return func(t *zr) {
+		t.level = zerolog.InfoLevel
 	}
 }
 
@@ -48,9 +113,9 @@ zr is called on for custom log format.
 Allowed format are json and human.
 if this option is not used the log level is json.
 */
-func WithCustomFormat(format string) ExtraZrOptions {
+func WithCustomFormat(format FormatsOptions) ExtraZrOptions {
 	return func(t *zr) {
-		t.format = format
+		format(t)
 	}
 }
 
@@ -67,13 +132,33 @@ func WithCustomHotReload(opts ...hr.ExtraHotReloadOptions) ExtraZrOptions {
 }
 
 /*
+FormatHuman is an option which sets up the human log format.
+*/
+func FormatHuman() FormatsOptions {
+	return func(t *zr) {
+		t.format = "human"
+	}
+}
+
+/*
+FormatJSON is an option which sets up the json log format.
+*/
+func FormatJSON() FormatsOptions {
+	return func(t *zr) {
+		t.format = "json"
+	}
+}
+
+/*
 Setup is a constructor for zr.
 It takes a list of options which can be used to customize the zr.
 Available options are:
+
 	WithCustomLevel(level string)
 	WithCustomFormat
 
 Default values are:
+
 	level: info
 	format: json
 */

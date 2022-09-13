@@ -20,14 +20,12 @@ Two formats are available :
 ``` go linenums="1" hl_lines="2"
 
     zr.Setup(
-        zr.WithCustomFormat("json"), // (1)
+        zr.WithCustomFormat(zr.LevelJSON()), // (1)
     )
 
 ```
 
-1.  :octicons-info-24: This is a default value
-
-
+1. :octicons-info-24: This is a default value
 
 ## Human format
 
@@ -42,7 +40,7 @@ Two formats are available :
 ```go linenums="1" hl_lines="2"
 
     zr.Setup(
-        zr.WithCustomFormat("human"), 
+        zr.WithCustomFormat(zr.LevelHuman()), 
     )
 
 ```

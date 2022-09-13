@@ -11,6 +11,7 @@ The following levels are available :
 * error
 * fatal
 * panic
+* trace
 
 ```go hl_lines="6" linenums="1"
 
@@ -19,7 +20,7 @@ The following levels are available :
 func main() {
 
 	zr.Setup(
-        zr.WithCustomLevel("debug"),
+        zr.WithCustomLevel(zr.LevelDebug()),
     )
 
 	log.Debug().Msg("hello world")
