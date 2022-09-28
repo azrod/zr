@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/azrod/zr/pkg/data"
+	"github.com/azrod/zr/pkg/format"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -74,6 +75,6 @@ func TestGetSetRequests(t *testing.T) {
 	assert.Equal(t, []byte(`{"log_level":"debug","log_format":"json"}`), w.Body.Bytes())
 
 	d := b.Reload()
-	assert.Equal(t, "json", d.LogFormat)
+	assert.Equal(t, format.LogFormatJson, d.LogFormat)
 	assert.Equal(t, "debug", d.LogLevel)
 }

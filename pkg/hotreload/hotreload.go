@@ -128,7 +128,7 @@ func Setup() (*HotReload, error) {
 }
 
 /*
-getPodName is a function which is used to get the pod name.
+fromHostname is a function which is used to get the hostname.
 */
 func fromHostname() (string, error) {
 	// get hostname

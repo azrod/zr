@@ -1,20 +1,20 @@
 package zr
 
 import (
-	"os"
 	"strconv"
 
+	"github.com/azrod/zr/pkg/format"
 	hr "github.com/azrod/zr/pkg/hotreload"
-	"github.com/azrod/zr/pkg/utils"
+	"github.com/azrod/zr/pkg/level"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 const (
 	// Default level
-	default_level = zerolog.InfoLevel
+	default_level = level.LogLevel(zerolog.InfoLevel)
 	// Default log format
-	default_format = "json"
+	default_format = format.LogFormatJson
 )
 
 var (
@@ -23,8 +23,8 @@ var (
 )
 
 type zr struct {
-	level     zerolog.Level
-	format    string
+	format    *format.Format
+	level     *level.Level
 	hotReload *hr.HotReload
 	// logger   *zerolog.Logger
 }
@@ -36,21 +36,21 @@ WithCustomLevel is an option which sets up the custom log level.
 zr is called on for custom log level.
 if this option is not used the log level is info.
 */
-func WithCustomLevel(level string) ExtraZrOptions {
+func Level(logLevel level.LogLevel) ExtraZrOptions {
 	return func(t *zr) {
-		t.level, _ = utils.ParseLogLevel(level)
+		t.level.SetLevel(logLevel)
 	}
 }
 
 /*
-WithCustomFormat is an option which sets up the custom log format.
+Format is an option which sets up the custom log format.
 zr is called on for custom log format.
 Allowed format are json and human.
-if this option is not used the log level is json.
+if this option is not used the log format is json.
 */
-func WithCustomFormat(format string) ExtraZrOptions {
+func Format(format format.LogFormat) ExtraZrOptions {
 	return func(t *zr) {
-		t.format = format
+		t.format.SetFormat(format)
 	}
 }
 
@@ -67,13 +67,26 @@ func WithCustomHotReload(opts ...hr.ExtraHotReloadOptions) ExtraZrOptions {
 }
 
 /*
+	CustomFormatOptions is an option which sets up the custom log format.
+
+zr is called on for custom log format.
+*/
+func CustomFormatOptions(format format.Options) ExtraZrOptions {
+	return func(t *zr) {
+		t.format.SetOptions(format)
+	}
+}
+
+/*
 Setup is a constructor for zr.
 It takes a list of options which can be used to customize the zr.
 Available options are:
+
 	WithCustomLevel(level string)
 	WithCustomFormat
 
 Default values are:
+
 	level: info
 	format: json
 */
@@ -87,23 +100,13 @@ func Setup(opts ...ExtraZrOptions) error {
 	}
 
 	z = &zr{
-		level:     default_level,
-		format:    default_format,
+		format:    format.Setup(),
+		level:     level.Setup(),
 		hotReload: hrd,
 	}
 
 	for _, opt := range opts {
 		opt(z)
-	}
-
-	setLevel(z.level)
-	// Err return always nil
-
-	output = os.Stderr
-
-	err = setFormat(z.format)
-	if err != nil {
-		return err
 	}
 
 	// SRC https://github.com/rs/zerolog#add-file-and-line-number-to-log
@@ -132,29 +135,27 @@ func Setup(opts ...ExtraZrOptions) error {
 			for {
 				select {
 				case x := <-z.hotReload.Chan:
-					if x.LogFormat != z.format && x.LogFormat != "" {
-						err := setFormat(x.LogFormat)
+					if x.LogFormat.String() != z.format.GetFormat().String() && x.LogFormat.String() != "" {
+						err := z.format.SetFormat(x.LogFormat)
 						if err != nil {
 							log.Error().Msgf("error setting log format: %s", err)
 						} else {
-							log.Info().Msgf("log format changed from %s to: %s", z.format, x.LogFormat)
-							z.format = x.LogFormat
+							log.Info().Msgf("log format changed from %s to: %s", z.format.GetFormat().String(), x.LogFormat.String())
 						}
 					}
 
 					if x.LogLevel != "" {
 						// Parse log level
-						level, err := utils.ParseLogLevel(x.LogLevel)
+						lv, err := level.ParseLogLevel(x.LogLevel)
 						if err != nil {
 							log.Error().Msgf("error parsing log level: %s", err)
 						} else {
-							if level != z.level {
-								err := setLevel(level)
+							if lv.String() != z.level.String() {
+								err := z.level.SetLevel(lv)
 								if err != nil {
 									log.Error().Msgf("error setting log level: %s", err)
 								} else {
-									log.Info().Msgf("log level changed from %s to: %s", z.level, level)
-									z.level = level
+									log.Info().Msgf("log level changed from %s to: %s", z.level.String(), lv.String())
 								}
 							}
 						}

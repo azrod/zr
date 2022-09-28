@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/azrod/zr/pkg/data"
+	"github.com/azrod/zr/pkg/format"
 	mk "github.com/azrod/zr/pkg/mocks"
 	"github.com/phayes/freeport"
 	"github.com/stretchr/testify/assert"
@@ -118,7 +119,7 @@ func TestGetBackendETCD(t *testing.T) {
 
 	assert.NotNil(t, kv)
 	assert.Equal(t, "info", kv.LogLevel)
-	assert.Equal(t, "json", kv.LogFormat)
+	assert.Equal(t, format.LogFormatJson, kv.LogFormat)
 
 	err := client.Shutdown()
 	assert.Nil(t, err)

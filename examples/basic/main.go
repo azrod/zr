@@ -5,14 +5,17 @@ import (
 	"os/signal"
 
 	"github.com/azrod/zr"
+	"github.com/azrod/zr/pkg/format"
+	"github.com/azrod/zr/pkg/level"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
 func main() {
 
 	zr.Setup(
-		zr.WithCustomFormat("json"), // This is the default, but we show it here for clarity.
-		zr.WithCustomLevel("info"),  // This is the default, but we show it here for clarity.
+		zr.Format(format.LogFormatHuman),            // This is the default, but we show it here for clarity.
+		zr.Level(level.LogLevel(zerolog.InfoLevel)), // This is the default, but we show it here for clarity.
 	)
 
 	log.Info().Msg("This is a test for level info")

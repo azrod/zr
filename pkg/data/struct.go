@@ -1,10 +1,14 @@
 package data
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/azrod/zr/pkg/format"
+)
 
 type DataHotReload struct {
-	LogLevel  string `json:"log_level"`
-	LogFormat string `json:"log_format"`
+	LogLevel  string           `json:"log_level"`
+	LogFormat format.LogFormat `json:"log_format"`
 }
 
 type DataHotReloadJSON []byte

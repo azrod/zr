@@ -19,7 +19,7 @@ The following levels are available :
 func main() {
 
 	zr.Setup(
-        zr.WithCustomLevel("debug"),
+        zr.Level(level.LogLevel(zerolog.DebugLevel)), 
     )
 
 	log.Debug().Msg("hello world")

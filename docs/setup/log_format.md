@@ -20,7 +20,7 @@ Two formats are available :
 ``` go linenums="1" hl_lines="2"
 
     zr.Setup(
-        zr.WithCustomFormat("json"), // (1)
+        zr.Format(format.LogFormatJson), // (1)
     )
 
 ```
@@ -42,7 +42,7 @@ Two formats are available :
 ```go linenums="1" hl_lines="2"
 
     zr.Setup(
-        zr.WithCustomFormat("human"), 
+        zr.Format(format.LogFormatHuman), 
     )
 
 ```

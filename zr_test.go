@@ -3,7 +3,9 @@ package zr
 import (
 	"testing"
 
+	"github.com/azrod/zr/pkg/format"
 	hr "github.com/azrod/zr/pkg/hotreload"
+	"github.com/azrod/zr/pkg/level"
 
 	"github.com/azrod/zr/pkg/utils"
 	"github.com/rs/zerolog"
@@ -16,11 +18,10 @@ func Test_ServiceLogsProperly_LogFormat(t *testing.T) {
 	// Crate zerolog test helper.
 	tst := zltest.New(t)
 
-	output = tst
-
-	err := setFormat("json")
+	f := format.Setup()
+	f.SetOptions(format.CustomOutput(tst))
+	err := f.SetFormat(format.LogFormatJson)
 	assert.Nil(t, err)
-	assert.Equal(t, zerolog.InfoLevel, default_level)
 
 	// Configure zerolog and pas tester as a writer.
 	log := zerolog.New(tst).With().Timestamp().Logger()
@@ -44,14 +45,15 @@ func Test_ServiceLogsProperly_LogLevel(t *testing.T) {
 	// --- Given ---
 	// Crate zerolog test helper.
 	tst := zltest.New(t)
+	f := format.Setup()
 
-	output = tst
+	f.SetOptions(format.CustomOutput(tst))
 
-	lv, err := utils.ParseLogLevel("debug")
+	lv, err := level.ParseLogLevel("debug")
 	assert.Nil(t, err, "Parse log level should not return error")
-	assert.Equal(t, zerolog.DebugLevel, lv)
 
-	setLevel(lv)
+	l := level.Setup()
+	l.SetLevel(lv)
 
 	// Configure zerolog and pas tester as a writer.
 	log := zerolog.New(tst).With().Timestamp().Logger()
@@ -80,8 +82,8 @@ func Test_Setup(t *testing.T) {
 	err := Setup()
 	assert.Nil(t, err, "Setup should not return error")
 
-	assert.Equal(t, zerolog.InfoLevel, default_level)
-	assert.Equal(t, "json", default_format)
+	assert.Equal(t, z.level.GetLevel(), default_level)
+	assert.Equal(t, z.format.GetFormat(), default_format)
 
 	Done()
 }
@@ -99,6 +101,16 @@ func Test_WithCustomInterval(t *testing.T) {
 	assert.Nil(t, err, "Setup should not return error")
 }
 
+func Test_CustomOptionsFormat(t *testing.T) {
+	tst := zltest.New(t)
+
+	err := Setup(
+		CustomFormatOptions(format.CustomOutput(tst)),
+	)
+
+	assert.Nil(t, err, "Setup should not return error")
+}
+
 func Test_WithNoHotReload(t *testing.T) {
 	err := Setup(
 		WithCustomHotReload(
@@ -111,8 +123,9 @@ func Test_WithNoHotReload(t *testing.T) {
 }
 
 func Test_WithCustomLogLevel(t *testing.T) {
+
 	err := Setup(
-		WithCustomLevel("debug"),
+		Level(level.LogLevel(zerolog.DebugLevel)),
 	)
 
 	assert.Nil(t, err, "Setup should not return error")
@@ -120,29 +133,19 @@ func Test_WithCustomLogLevel(t *testing.T) {
 }
 
 func Test_WithCustomLogLevel_Invalid(t *testing.T) {
-	Setup(
-		WithCustomLevel("unknown"),
-	)
 
-	assert.Equal(t, z.level, default_level, "Log level should be set")
+	_, err := level.ParseLogLevel("unknown")
+	assert.Equal(t, err, level.ErrLogLevel, "Level should be allowed")
 
 }
 
 func Test_WithCustomFormat(t *testing.T) {
 	err := Setup(
-		WithCustomFormat("human"),
+		Format(format.LogFormatHuman),
 	)
 
 	assert.Nil(t, err, "Setup should not return error")
-	assert.Equal(t, z.format, "human", "Log format should be set")
-}
-
-func Test_WithCustomFormat_Invalid(t *testing.T) {
-	err := Setup(
-		WithCustomFormat("unknown"),
-	)
-	assert.NotNil(t, err, "Setup should not return error")
-
+	assert.Equal(t, z.format.GetFormat().String(), "human", "Log format should be set")
 }
 
 // 	// --- Given ---

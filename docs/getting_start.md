@@ -15,7 +15,6 @@
     import (
         "github.com/azrod/zr"
         "github.com/rs/zerolog/log"
-
     )
     
     func main() {
