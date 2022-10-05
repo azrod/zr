@@ -82,7 +82,7 @@ func (b *BLocalAPI) HttpServer() error {
 	b.srvHttpServer()
 	b.srv.Handler = r
 
-	log.Printf("Starting HTTP Server (%s)", b.srv.Addr)
+	log.Printf("Starting Zerolog HotReload HTTP Server (%s)", b.srv.Addr)
 	go func() {
 		if err := b.srv.ListenAndServe(); err != http.ErrServerClosed {
 			// return err
