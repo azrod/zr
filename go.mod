@@ -1,6 +1,6 @@
 module github.com/azrod/zr
 
-go 1.19
+go 1.20
 
 replace github.com/coreos/bbolt v1.3.6 => go.etcd.io/bbolt v1.3.6
 
@@ -10,9 +10,9 @@ require (
 	github.com/azrod/common-go v0.0.0-20220603090954-c8f06593c6cd
 	github.com/gorilla/mux v1.8.0
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
-	github.com/rs/zerolog v1.28.0
+	github.com/rs/zerolog v1.29.0
 	github.com/rzajac/zltest v0.12.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.2
 	go.etcd.io/etcd/client/v3 v3.5.7
 	go.etcd.io/etcd/server/v3 v3.5.7
 )
